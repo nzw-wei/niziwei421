@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>描线房 · 移动样张 — SVG 图标底部导航</title>
+    <!-- SVG 方式：iconfont 项目导出的 symbol 雪碧图脚本（font 目录），注入后用 <use> 取形 -->
+    <script src="font/iconfont.js"></script>
+    <style>
+        :root {
+            --nzw-paper: #ecefea;      /* 瓷灰：纸面 */
+            --nzw-ink: #1e3a5f;        /* 靛青：墨线 */
+            --nzw-seal: #c73e2e;       /* 朱砂：选中 */
+            --nzw-mist: #64707d;       /* 淡墨：未选中 */
+            --nzw-line: rgba(30, 58, 95, 0.28);
+            --nzw-alert: #e5484d;      /* 徽章与红点 */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100dvh;
+            background: #d9dcd6;
+            color: var(--nzw-ink);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            line-height: 1.7;
+        }
+
+        /* 移动端全幅；桌面端呈现为居中的机身 */
+        .nzw_app {
+            position: relative;
+            max-width: 480px;
+            min-height: 100dvh;
+            margin: 0 auto;
+            background: var(--nzw-paper);
+            box-shadow: 0 0 60px rgba(30, 58, 95, 0.25);
+        }
+
+        /* ===== 顶部应用栏 ===== */
+        .nzw_appbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px 18px 14px;
+            border-bottom: 1px solid var(--nzw-line);
+        }
+
+        .nzw_appTitle {
+            margin: 0;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+        }
+
+        .nzw_appTitle small {
+            display: block;
+            font-family: "Microsoft YaHei", sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: var(--nzw-mist);
+        }
+
+        .nzw_appLinks {
+            display: flex;
+            gap: 14px;
+            font-size: 13px;
+        }
+
+        .nzw_appLinks a {
+            color: var(--nzw-ink);
+            text-decoration: none;
+            border-bottom: 1px solid var(--nzw-seal);
+            padding-bottom: 2px;
+        }
+
+        /* ===== 内容面板 ===== */
+        .nzw_content {
+            padding: 20px 18px calc(96px + env(safe-area-inset-bottom));
+        }
+
+        .nzw_panel { display: none; }
+
+        .nzw_panel.nzw_isActive { display: block; }
+
+        .nzw_panel h2 {
+            margin: 0 0 8px;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 24px;
+            letter-spacing: 0.1em;
+        }
+
+        .nzw_panel > p {
+            margin: 0 0 18px;
+            font-size: 14px;
+        }
+
+        .nzw_castBtn {
+            display: inline-block;
+            padding: 12px 22px;
+            border: 1px solid var(--nzw-seal);
+            background: transparent;
+            color: var(--nzw-seal);
+            font-size: 15px;
+            font-family: inherit;
+            letter-spacing: 0.12em;
+            cursor: pointer;
+        }
+
+        .nzw_castBtn:active { background: rgba(199, 62, 46, 0.1); }
+
+        .nzw_castBtn:focus-visible {
+            outline: 2px solid var(--nzw-seal);
+            outline-offset: 3px;
+        }
+
+        /* 藏品列表 */
+        .nzw_goods {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border-top: 1px solid var(--nzw-line);
+        }
+
+        .nzw_goods li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 2px;
+            border-bottom: 1px solid var(--nzw-line);
+            font-size: 14px;
+        }
+
+        .nzw_goods svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--nzw-seal);
+            flex: none;
+        }
+
+        .nzw_goods b { font-weight: 600; }
+
+        .nzw_goods span { color: var(--nzw-mist); font-size: 12.5px; }
+
+        /* ===== 底部导航：固定 + 四项等分自适应 ===== */
+        .nzw_tabbar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
+            display: flex;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding-bottom: env(safe-area-inset-bottom);
+            background: #f4f4f0;
+            border-top: 1px solid var(--nzw-line);
+        }
+
+        .nzw_tab {
+            position: relative;
+            flex: 1;                    /* 自适应宽度：四项等分 */
+            display: grid;
+            justify-items: center;
+            gap: 3px;
+            padding: 9px 0 7px;
+            background: transparent;
+            border: 0;
+            color: var(--nzw-mist);
+            font-family: inherit;
+            font-size: 11.5px;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+        }
+
+        .nzw_tab:focus-visible {
+            outline: 2px solid var(--nzw-seal);
+            outline-offset: -4px;
+        }
+
+        .nzw_tabIconWrap {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: 28px;
+            height: 26px;
+        }
+
+        /* SVG 图标：随 width/height 与 fill 缩放变色 */
+        .nzw_tabIcon {
+            width: 23px;
+            height: 23px;
+            fill: currentColor;
+        }
+
+        .nzw_tab.nzw_isActive { color: var(--nzw-seal); }
+
+        /* 选中态顶签 */
+        .nzw_tab::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 22px;
+            height: 2px;
+            background: transparent;
+        }
+
+        .nzw_tab.nzw_isActive::before { background: var(--nzw-seal); }
+
+        /* ===== 徽章：数字与红点，钉在图标右上角 ===== */
+        .nzw_badgeNum {
+            position: absolute;
+            top: -7px;
+            right: -12px;
+            min-width: 17px;
+            height: 17px;
+            padding: 0 4px;
+            border-radius: 999px;
+            background: var(--nzw-alert);
+            color: #fff;
+            font-size: 10.5px;
+            line-height: 17px;
+            text-align: center;
+            font-family: Consolas, monospace;
+        }
+
+        .nzw_badgeDot {
+            position: absolute;
+            top: -3px;
+            right: -5px;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--nzw-alert);
+        }
+
+        .nzw_isHidden { display: none; }
+
+        /* 徽章跳动：回应加入购物车的动作 */
+        .nzw_isPop {
+            animation: nzwPop 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes nzwPop {
+            0% { transform: scale(0.4); }
+            60% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nzw_isPop { animation: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="nzw_app">
+        <header class="nzw_appbar">
+            <h1 class="nzw_appTitle">描线房<small>SVG 图标 · 底部导航样张</small></h1>
+            <nav class="nzw_appLinks" aria-label="页面导航">
+                <a href="index.html">课堂首页</a>
+                <a href="iconfont-3.html">字体版</a>
+            </nav>
+        </header>
+
+        <main class="nzw_content">
+            <section class="nzw_panel nzw_isActive" id="nzw_panelHome" role="tabpanel" aria-label="首页">
+                <h2>四个格子，一条底栏</h2>
+                <p>
+                    导航图标不再是字符，而是一段段 SVG 路径：iconfont.js
+                    把字形注入为 <b>&lt;symbol&gt;</b>，页面用
+                    <b>&lt;use&gt;</b> 取形。点下方按钮，看购物车徽章如何跳动。
+                </p>
+                <button class="nzw_castBtn" id="nzw_castBtn" type="button">加入购物车</button>
+            </section>
+
+            <section class="nzw_panel" id="nzw_panelFav" role="tabpanel" aria-label="收藏">
+                <h2>收藏夹</h2>
+                <p>第五枚「喜欢」在这里做列表符号——SVG 的填充色由 CSS 的 fill 决定，换色不必换图。</p>
+                <ul class="nzw_goods">
+                    <li>
+                        <svg aria-hidden="true"><use href="#icon-xihuan" xlink:href="#icon-xihuan"></use></svg>
+                        <b>活字盘 · 鎏金</b><span>已收藏 3 天</span>
+                    </li>
+                    <li>
+                        <svg aria-hidden="true"><use href="#icon-xihuan" xlink:href="#icon-xihuan"></use></svg>
+                        <b>雕版 · 群青</b><span>已收藏 12 天</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="nzw_panel" id="nzw_panelCart" role="tabpanel" aria-label="购物车">
+                <h2>购物车</h2>
+                <p>徽章数字与清单实时一致——这是底部导航最常见的一种状态联动。</p>
+                <ul class="nzw_goods" id="nzw_cartList"></ul>
+            </section>
+
+            <section class="nzw_panel" id="nzw_panelMe" role="tabpanel" aria-label="我的">
+                <h2>我的</h2>
+                <p id="nzw_meNote">右上角那粒红点表示有未读——进入这一页后它就完成了使命，自动熄灭。</p>
+                <ul class="nzw_goods">
+                    <li><b>倪紫微</b><span>高级网页设计 · 课堂样张</span></li>
+                </ul>
+            </section>
+        </main>
+
+        <nav class="nzw_tabbar" aria-label="底部导航">
+            <button class="nzw_tab nzw_isActive" id="nzw_tabHome" type="button" aria-label="首页">
+                <span class="nzw_tabIconWrap">
+                    <svg class="nzw_tabIcon" aria-hidden="true"><use href="#icon-shouye" xlink:href="#icon-shouye"></use></svg>
+                </span>
+                首页
+            </button>
+            <button class="nzw_tab" id="nzw_tabFav" type="button" aria-label="收藏">
+                <span class="nzw_tabIconWrap">
+                    <svg class="nzw_tabIcon" aria-hidden="true"><use href="#icon-shoucang" xlink:href="#icon-shoucang"></use></svg>
+                </span>
+                收藏
+            </button>
+            <button class="nzw_tab" id="nzw_tabCart" type="button" aria-label="购物车">
+                <span class="nzw_tabIconWrap">
+                    <svg class="nzw_tabIcon" aria-hidden="true"><use href="#icon-gouwuche" xlink:href="#icon-gouwuche"></use></svg>
+                    <b class="nzw_badgeNum" id="nzw_cartBadge">2</b>
+                </span>
+                购物车
+            </button>
+            <button class="nzw_tab" id="nzw_tabMe" type="button" aria-label="我的">
+                <span class="nzw_tabIconWrap">
+                    <svg class="nzw_tabIcon" aria-hidden="true"><use href="#icon-wode" xlink:href="#icon-wode"></use></svg>
+                    <b class="nzw_badgeDot" id="nzw_meDot"></b>
+                </span>
+                我的
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        // 全部变量与函数名以 nzw_ 开头（课程命名规范）
+        var nzw_cartCount = 2;
+        var nzw_cartNames = ["活字盘 · 鎏金", "雕版 · 群青"];
+        var nzw_tabs = document.querySelectorAll(".nzw_tab");
+        var nzw_panels = document.querySelectorAll(".nzw_panel");
+        var nzw_castBtn = document.getElementById("nzw_castBtn");
+        var nzw_cartBadge = document.getElementById("nzw_cartBadge");
+        var nzw_cartList = document.getElementById("nzw_cartList");
+        var nzw_meDot = document.getElementById("nzw_meDot");
+        var nzw_meNote = document.getElementById("nzw_meNote");
+
+        // 雪碧图里部分字形自带 fill="#707070" 等硬编码，
+        // 剥离后 fill 才能交给 CSS（currentColor / 页面色板）统一控制
+        function nzw_stripSpriteFills() {
+            var nzw_hard = document.querySelectorAll("svg symbol path[fill]");
+            nzw_hard.forEach(function (nzw_path) {
+                nzw_path.removeAttribute("fill");
+            });
+        }
+
+        // iconfont.js 在 DOMContentLoaded 时注入雪碧图，这里等它完成再剥 fill
+        function nzw_boot() {
+            nzw_stripSpriteFills();
+            nzw_renderCart();
+        }
+
+        // 切换标签：一处 active，面板联动
+        function nzw_activate(nzw_tab) {
+            nzw_tabs.forEach(function (nzw_item) {
+                nzw_item.classList.remove("nzw_isActive");
+            });
+            nzw_panels.forEach(function (nzw_p) {
+                nzw_p.classList.remove("nzw_isActive");
+            });
+            nzw_tab.classList.add("nzw_isActive");
+            var nzw_map = {
+                nzw_tabHome: "nzw_panelHome",
+                nzw_tabFav: "nzw_panelFav",
+                nzw_tabCart: "nzw_panelCart",
+                nzw_tabMe: "nzw_panelMe"
+            };
+            document.getElementById(nzw_map[nzw_tab.id]).classList.add("nzw_isActive");
+
+            // 进入「我的」即清除红点
+            if (nzw_tab.id === "nzw_tabMe" && !nzw_meDot.classList.contains("nzw_isHidden")) {
+                nzw_meDot.classList.add("nzw_isHidden");
+                nzw_meNote.textContent = "红点已清除——它的职责是提醒，不是常驻。";
+            }
+        }
+
+        // 徽章同步：数字 + 清单 + 跳动
+        function nzw_renderCart() {
+            nzw_cartBadge.textContent = nzw_cartCount;
+            nzw_cartBadge.classList.remove("nzw_isHidden");
+            nzw_cartList.innerHTML = "";
+            for (var nzw_i = 0; nzw_i < nzw_cartCount; nzw_i++) {
+                var nzw_li = document.createElement("li");
+                var nzw_name = nzw_cartNames[nzw_i % nzw_cartNames.length];
+                nzw_li.innerHTML = '<b>' + nzw_name + '</b><span>第 ' + (nzw_i + 1) + ' 件</span>';
+                nzw_cartList.appendChild(nzw_li);
+            }
+            nzw_cartBadge.classList.remove("nzw_isPop");
+            void nzw_cartBadge.offsetWidth; // 重置动画
+            nzw_cartBadge.classList.add("nzw_isPop");
+        }
+
+        nzw_tabs.forEach(function (nzw_tab) {
+            nzw_tab.addEventListener("click", function () {
+                nzw_activate(nzw_tab);
+            });
+        });
+
+        nzw_castBtn.addEventListener("click", function () {
+            nzw_cartCount += 1;
+            nzw_renderCart();
+        });
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", nzw_boot);
+        } else {
+            nzw_boot();
+        }
+    </script>
+</body>
+</html>

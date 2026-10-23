@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>铸字间 — 字体图标 · Font Awesome</title>
+    <!-- 本地字体图标方案：Font Awesome 6，CSS 与 webfonts 均已下载到 cdn 目录 -->
+    <link rel="stylesheet" href="cdn/fontawesome/css/all.min.css" />
+    <style>
+        :root {
+            --nzw-ink: #101b33;        /* 玄青：地面 */
+            --nzw-panel: #17244a;      /* 群青：样张底板 */
+            --nzw-chalk: #e8ecf4;      /* 月白：字形 */
+            --nzw-brass: #d9a441;      /* 鎏金：点缀 */
+            --nzw-patina: #6e88a6;     /* 铜锈：辅助文字 */
+            --nzw-line: rgba(110, 136, 166, 0.35);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 82% 12%, rgba(29, 49, 102, 0.55), transparent 42%),
+                var(--nzw-ink);
+            color: var(--nzw-chalk);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            line-height: 1.7;
+        }
+
+        .nzw_page {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 28px 32px 64px;
+        }
+
+        /* ===== 顶部：品牌与导航 ===== */
+        .nzw_topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--nzw-line);
+        }
+
+        .nzw_brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nzw_brandSeal {
+            display: grid;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            border: 1px solid var(--nzw-brass);
+            color: var(--nzw-brass);
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .nzw_brandName {
+            margin: 0;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+        }
+
+        .nzw_brandSub {
+            margin: 0;
+            font-size: 12px;
+            color: var(--nzw-patina);
+            letter-spacing: 0.08em;
+        }
+
+        .nzw_nav {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nzw_nav a {
+            color: var(--nzw-chalk);
+            text-decoration: none;
+            font-size: 15px;
+            padding-bottom: 3px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nzw_nav a:hover,
+        .nzw_nav a:focus-visible {
+            border-bottom-color: var(--nzw-brass);
+        }
+
+        .nzw_nav a:focus-visible {
+            outline: 2px solid var(--nzw-brass);
+            outline-offset: 4px;
+        }
+
+        /* ===== 主视觉：巨型可缩放字形 ===== */
+        .nzw_hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 48px;
+            align-items: center;
+            padding: 64px 0 40px;
+        }
+
+        .nzw_stage {
+            position: relative;
+            display: grid;
+            place-items: center;
+            min-height: 360px;
+            border: 1px solid var(--nzw-line);
+            background: var(--nzw-panel);
+        }
+
+        /* 铸造瞬间：整页唯一的入场动画 */
+        .nzw_stage .fa-palette {
+            color: var(--nzw-chalk);
+            animation: nzwCast 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes nzwCast {
+            from { opacity: 0; transform: scale(1.14); filter: blur(8px); }
+            to   { opacity: 1; transform: scale(1); filter: blur(0); }
+        }
+
+        .nzw_stageCode {
+            position: absolute;
+            right: 14px;
+            bottom: 10px;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            color: var(--nzw-brass);
+        }
+
+        .nzw_stageTag {
+            position: absolute;
+            left: 14px;
+            top: 12px;
+            font-size: 12px;
+            color: var(--nzw-patina);
+            letter-spacing: 0.2em;
+        }
+
+        .nzw_sizeCtl {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--nzw-patina);
+        }
+
+        .nzw_sizeCtl input[type="range"] {
+            flex: 1;
+            accent-color: var(--nzw-brass);
+        }
+
+        .nzw_sizeValue {
+            min-width: 72px;
+            text-align: right;
+            font-family: Consolas, monospace;
+            color: var(--nzw-brass);
+        }
+
+        /* 竖排题字 */
+        .nzw_heroText {
+            display: flex;
+            gap: 26px;
+            align-items: flex-start;
+        }
+
+        .nzw_vertical {
+            writing-mode: vertical-rl;
+            font-family: "KaiTi", "STKaiti", serif;
+            font-size: 30px;
+            letter-spacing: 0.42em;
+            color: var(--nzw-brass);
+            margin: 4px 0 0;
+            flex: none;
+        }
+
+        .nzw_heroCopy h1 {
+            margin: 0 0 18px;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            line-height: 1.15;
+        }
+
+        .nzw_heroCopy p {
+            margin: 0 0 26px;
+            max-width: 34em;
+            color: rgba(232, 236, 244, 0.85);
+        }
+
+        /* 加载流程：字体 → 码点 → 类名，真实顺序 */
+        .nzw_pipeline {
+            margin: 0;
+            border-top: 1px solid var(--nzw-line);
+        }
+
+        .nzw_pipeline li {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 12px;
+            list-style: none;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--nzw-line);
+            font-size: 14px;
+        }
+
+        .nzw_pipeline b {
+            font-family: Consolas, monospace;
+            color: var(--nzw-brass);
+            font-weight: 400;
+        }
+
+        .nzw_pipeline code {
+            font-family: Consolas, monospace;
+            color: var(--nzw-chalk);
+            background: rgba(217, 164, 65, 0.12);
+            padding: 1px 6px;
+        }
+
+        /* ===== 样张网格 ===== */
+        .nzw_sectionHead {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 56px 0 22px;
+            padding-top: 26px;
+            border-top: 1px solid var(--nzw-line);
+        }
+
+        .nzw_sectionHead h2 {
+            margin: 0;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 28px;
+            letter-spacing: 0.14em;
+        }
+
+        .nzw_sectionHead span {
+            font-size: 13px;
+            color: var(--nzw-patina);
+        }
+
+        .nzw_specimens {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+            gap: 14px;
+        }
+
+        .nzw_specimen {
+            padding: 22px 16px 16px;
+            border: 1px solid var(--nzw-line);
+            background: var(--nzw-panel);
+            text-align: center;
+        }
+
+        .nzw_specimen i {
+            font-size: 40px;
+            color: var(--nzw-chalk);
+            transition: color 200ms ease, transform 200ms ease;
+        }
+
+        .nzw_specimen:hover i,
+        .nzw_specimen:focus-visible i {
+            color: var(--nzw-brass);
+            transform: translateY(-3px);
+        }
+
+        .nzw_specimen:focus-visible {
+            outline: 2px solid var(--nzw-brass);
+            outline-offset: 2px;
+        }
+
+        .nzw_specimen h3 {
+            margin: 14px 0 4px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        .nzw_specimen p {
+            margin: 0;
+            font-family: Consolas, monospace;
+            font-size: 11.5px;
+            color: var(--nzw-patina);
+        }
+
+        .nzw_specimen p b {
+            color: var(--nzw-brass);
+            font-weight: 400;
+        }
+
+        /* ===== 字体属性演示 ===== */
+        .nzw_demoRow {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+            gap: 14px;
+        }
+
+        .nzw_demoBlock {
+            padding: 24px 26px;
+            border: 1px solid var(--nzw-line);
+            background: var(--nzw-panel);
+        }
+
+        .nzw_demoBlock h3 {
+            margin: 0 0 16px;
+            font-size: 15px;
+            letter-spacing: 0.12em;
+            color: var(--nzw-brass);
+            font-weight: 600;
+        }
+
+        .nzw_inlineDemo {
+            margin: 0;
+            font-size: 19px;
+            line-height: 2.1;
+            color: rgba(232, 236, 244, 0.92);
+        }
+
+        .nzw_inlineDemo i {
+            color: var(--nzw-brass);
+            margin: 0 4px;
+        }
+
+        /* 同一字符五级字号 */
+        .nzw_scaleDemo {
+            display: flex;
+            align-items: baseline;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .nzw_scaleDemo figure {
+            margin: 0;
+            text-align: center;
+        }
+
+        .nzw_scaleDemo i { color: var(--nzw-chalk); }
+
+        .nzw_scaleDemo figcaption {
+            margin-top: 8px;
+            font-family: Consolas, monospace;
+            font-size: 11px;
+            color: var(--nzw-patina);
+        }
+
+        /* ===== 页脚 ===== */
+        .nzw_footer {
+            margin-top: 64px;
+            padding-top: 22px;
+            border-top: 1px solid var(--nzw-line);
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            color: var(--nzw-patina);
+        }
+
+        .nzw_footer a {
+            color: var(--nzw-chalk);
+            text-decoration: none;
+            border-bottom: 1px solid var(--nzw-brass);
+            padding-bottom: 2px;
+        }
+
+        /* ===== 响应式与偏好 ===== */
+        @media (max-width: 860px) {
+            .nzw_hero { grid-template-columns: 1fr; gap: 30px; padding-top: 40px; }
+            .nzw_heroCopy h1 { font-size: 40px; }
+            .nzw_demoRow { grid-template-columns: 1fr; }
+            .nzw_vertical { writing-mode: horizontal-tb; letter-spacing: 0.3em; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nzw_stage .fa-palette { animation: none; }
+            .nzw_specimen i { transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="nzw_page">
+        <header class="nzw_topbar">
+            <div class="nzw_brand">
+                <div class="nzw_brandSeal">铸</div>
+                <div>
+                    <h1 class="nzw_brandName">铸字间</h1>
+                    <p class="nzw_brandSub">FONT AWESOME · 字体图标</p>
+                </div>
+            </div>
+            <nav class="nzw_nav" aria-label="页面导航">
+                <a href="index.html">课堂首页</a>
+                <a href="iconfont-2.html">描线房 · SVG 图标</a>
+            </nav>
+        </header>
+
+        <section class="nzw_hero">
+            <div>
+                <div class="nzw_stage">
+                    <span class="nzw_stageTag">活字 · f53f</span>
+                    <i class="fa-solid fa-palette nzw_heroGlyph" id="nzw_heroGlyph" aria-hidden="true"></i>
+                    <span class="nzw_stageCode">fa-solid fa-palette</span>
+                </div>
+                <div class="nzw_sizeCtl">
+                    <label for="nzw_sizeSlider">字号</label>
+                    <input type="range" id="nzw_sizeSlider" min="64" max="288" step="4" value="176" />
+                    <output class="nzw_sizeValue" id="nzw_sizeValue" for="nzw_sizeSlider">176px</output>
+                </div>
+            </div>
+            <div class="nzw_heroText">
+                <p class="nzw_vertical">以字为形</p>
+                <div class="nzw_heroCopy">
+                    <h1>一枚图标，<br />就是一个字符。</h1>
+                    <p>
+                        这里陈列的每一枚图标，本质上都是一个文字。Font Awesome
+                        把上千个字形铸进一枚 .woff2 字体文件，浏览器加载它，
+        就像加载宋体、黑体一样；写下一个类名，CSS
+        再用码点把这个字符印在页面上。
+                    </p>
+                    <ul class="nzw_pipeline">
+                        <li>
+                            <b>01</b>
+                            <span>铸字 —— <code>all.min.css</code> 声明 <code>@font-face</code>，指向本地 <code>webfonts/fa-solid-900.woff2</code></span>
+                        </li>
+                        <li>
+                            <b>02</b>
+                            <span>取模 —— 每枚图标占一个 Unicode 码位，相机的码位是 <code>f030</code></span>
+                        </li>
+                        <li>
+                            <b>03</b>
+                            <span>印刷 —— 写下 <code>&lt;i class="fa-solid fa-camera"&gt;</code>，<code>::before</code> 替换成字符</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="nzw_specTitle">
+            <div class="nzw_sectionHead">
+                <h2 id="nzw_specTitle">铸字样张</h2>
+                <span>十二枚实心字形 · 悬停看铸色</span>
+            </div>
+            <div class="nzw_specimens">
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-camera" aria-hidden="true"></i>
+                    <h3>相机</h3>
+                    <p>fa-camera <b>f030</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-palette" aria-hidden="true"></i>
+                    <h3>调色盘</h3>
+                    <p>fa-palette <b>f53f</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-paintbrush" aria-hidden="true"></i>
+                    <h3>毛笔</h3>
+                    <p>fa-paintbrush <b>f1fc</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-feather" aria-hidden="true"></i>
+                    <h3>羽毛笔</h3>
+                    <p>fa-feather <b>f52b</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-fire" aria-hidden="true"></i>
+                    <h3>火焰</h3>
+                    <p>fa-fire <b>f06d</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-star" aria-hidden="true"></i>
+                    <h3>星</h3>
+                    <p>fa-star <b>f005</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                    <h3>心</h3>
+                    <p>fa-heart <b>f004</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-music" aria-hidden="true"></i>
+                    <h3>音符</h3>
+                    <p>fa-music <b>f001</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+                    <h3>闪电</h3>
+                    <p>fa-bolt <b>f0e7</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-moon" aria-hidden="true"></i>
+                    <h3>月</h3>
+                    <p>fa-moon <b>f186</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-anchor" aria-hidden="true"></i>
+                    <h3>锚</h3>
+                    <p>fa-anchor <b>f13d</b></p>
+                </a>
+                <a class="nzw_specimen" href="javascript:void(0)">
+                    <i class="fa-solid fa-gem" aria-hidden="true"></i>
+                    <h3>宝石</h3>
+                    <p>fa-gem <b>f3a5</b></p>
+                </a>
+            </div>
+        </section>
+
+        <section aria-labelledby="nzw_demoTitle">
+            <div class="nzw_sectionHead">
+                <h2 id="nzw_demoTitle">字性验证</h2>
+                <span>既然是字体，就服从字体的一切法则</span>
+            </div>
+            <div class="nzw_demoRow">
+                <div class="nzw_demoBlock">
+                    <h3>一行文字里的图标</h3>
+                    <p class="nzw_inlineDemo">
+                        按下 <i class="fa-solid fa-star" aria-hidden="true"></i>
+                        收藏这份样张，点亮 <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                        表示喜欢，再用 <i class="fa-solid fa-share" aria-hidden="true"></i>
+                        递给同桌——图标随文字对齐基线，<code>font-size</code> 与
+                        <code>color</code> 直接生效。
+                    </p>
+                </div>
+                <div class="nzw_demoBlock">
+                    <h3>同一字符，五级字号</h3>
+                    <div class="nzw_scaleDemo">
+                        <figure>
+                            <i class="fa-solid fa-pen-nib" style="font-size: 16px" aria-hidden="true"></i>
+                            <figcaption>16px</figcaption>
+                        </figure>
+                        <figure>
+                            <i class="fa-solid fa-pen-nib" style="font-size: 24px" aria-hidden="true"></i>
+                            <figcaption>24px</figcaption>
+                        </figure>
+                        <figure>
+                            <i class="fa-solid fa-pen-nib" style="font-size: 36px" aria-hidden="true"></i>
+                            <figcaption>36px</figcaption>
+                        </figure>
+                        <figure>
+                            <i class="fa-solid fa-pen-nib" style="font-size: 52px" aria-hidden="true"></i>
+                            <figcaption>52px</figcaption>
+                        </figure>
+                        <figure>
+                            <i class="fa-solid fa-pen-nib" style="font-size: 72px" aria-hidden="true"></i>
+                            <figcaption>72px</figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="nzw_footer">
+            <span>高级网页设计 · 课堂实践 —— 字体图标篇</span>
+            <span>
+                <a href="index.html">返回课堂首页</a>
+                　　
+                <a href="iconfont-2.html">前往描线房，看 SVG 如何描线</a>
+            </span>
+        </footer>
+    </div>
+
+    <script>
+        // 全部变量以 nzw_ 开头（课程命名规范）
+        var nzw_sizeSlider = document.getElementById("nzw_sizeSlider");
+        var nzw_sizeValue = document.getElementById("nzw_sizeValue");
+        var nzw_heroGlyph = document.getElementById("nzw_heroGlyph");
+
+        function nzw_syncGlyphSize() {
+            var nzw_px = nzw_sizeSlider.value + "px";
+            nzw_heroGlyph.style.fontSize = nzw_px;
+            nzw_sizeValue.textContent = nzw_px;
+        }
+
+        nzw_sizeSlider.addEventListener("input", nzw_syncGlyphSize);
+        nzw_syncGlyphSize();
+    </script>
+</body>
+</html>

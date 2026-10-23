@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>描线房 — SVG 图标 · Lucide</title>
+    <!-- 本地 SVG 图标方案：Lucide UMD 构建，已下载到 cdn 目录 -->
+    <script src="cdn/lucide/lucide.min.js"></script>
+    <style>
+        :root {
+            --nzw-paper: #ecefea;      /* 瓷灰：纸面 */
+            --nzw-ink: #1e3a5f;        /* 靛青：墨线 */
+            --nzw-seal: #c73e2e;       /* 朱砂：印记 */
+            --nzw-mist: #64707d;       /* 淡墨：辅助文字 */
+            --nzw-line: rgba(30, 58, 95, 0.28);
+            --nzw-stroke: 2;           /* 全站线宽，由滑杆驱动 */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--nzw-paper);
+            color: var(--nzw-ink);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            line-height: 1.7;
+        }
+
+        /* 画框：画廊海报式的内嵌细框 */
+        .nzw_frame {
+            min-height: calc(100vh - 32px);
+            margin: 16px;
+            border: 1px solid var(--nzw-ink);
+        }
+
+        .nzw_page {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 28px 32px 56px;
+        }
+
+        /* 本页所有图标均为真实 SVG，线宽由一个变量统一驱动 */
+        .nzw_page svg {
+            stroke-width: var(--nzw-stroke);
+        }
+
+        /* ===== 顶部：品牌与导航 ===== */
+        .nzw_topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--nzw-line);
+        }
+
+        .nzw_brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nzw_brandSeal {
+            display: grid;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            background: var(--nzw-seal);
+            color: #f6f2e9;
+            font-family: "KaiTi", "STKaiti", serif;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .nzw_brandName {
+            margin: 0;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+        }
+
+        .nzw_brandSub {
+            margin: 0;
+            font-size: 12px;
+            color: var(--nzw-mist);
+            letter-spacing: 0.08em;
+        }
+
+        .nzw_nav {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nzw_nav a {
+            color: var(--nzw-ink);
+            text-decoration: none;
+            font-size: 15px;
+            padding-bottom: 3px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nzw_nav a:hover,
+        .nzw_nav a:focus-visible {
+            border-bottom-color: var(--nzw-seal);
+        }
+
+        .nzw_nav a:focus-visible {
+            outline: 2px solid var(--nzw-seal);
+            outline-offset: 4px;
+        }
+
+        /* ===== 主视觉：巨型可调线宽的描线图标 ===== */
+        .nzw_hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 48px;
+            align-items: center;
+            padding: 64px 0 40px;
+        }
+
+        .nzw_stage {
+            position: relative;
+            display: grid;
+            place-items: center;
+            min-height: 360px;
+            border: 1px solid var(--nzw-line);
+            background: #f4f4f0;
+        }
+
+        .nzw_stageTag {
+            position: absolute;
+            left: 14px;
+            top: 12px;
+            font-size: 12px;
+            color: var(--nzw-mist);
+            letter-spacing: 0.2em;
+        }
+
+        .nzw_heroIcon svg {
+            width: 220px;
+            height: 220px;
+            color: var(--nzw-ink);
+        }
+
+        .nzw_stageCode {
+            position: absolute;
+            right: 14px;
+            bottom: 10px;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            color: var(--nzw-seal);
+        }
+
+        /* 落笔瞬间：唯一的入场动画，线条自己画完 */
+        .nzw_heroIcon svg :is(path, circle, line, polyline, polygon, rect) {
+            stroke-dasharray: 260;
+            stroke-dashoffset: 260;
+            animation: nzwDraw 1400ms ease-out forwards;
+        }
+
+        .nzw_heroIcon svg :is(path, circle, line, polyline, polygon, rect):nth-of-type(2) {
+            animation-delay: 350ms;
+        }
+
+        .nzw_heroIcon svg :is(path, circle, line, polyline, polygon, rect):nth-of-type(3) {
+            animation-delay: 700ms;
+        }
+
+        @keyframes nzwDraw {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .nzw_strokeCtl {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--nzw-mist);
+        }
+
+        .nzw_strokeCtl input[type="range"] {
+            flex: 1;
+            accent-color: var(--nzw-seal);
+        }
+
+        .nzw_strokeValue {
+            min-width: 84px;
+            text-align: right;
+            font-family: Consolas, monospace;
+            color: var(--nzw-seal);
+        }
+
+        /* 竖排题字 */
+        .nzw_heroText {
+            display: flex;
+            gap: 26px;
+            align-items: flex-start;
+        }
+
+        .nzw_vertical {
+            writing-mode: vertical-rl;
+            font-family: "KaiTi", "STKaiti", serif;
+            font-size: 30px;
+            letter-spacing: 0.42em;
+            color: var(--nzw-seal);
+            margin: 4px 0 0;
+            flex: none;
+        }
+
+        .nzw_heroCopy h1 {
+            margin: 0 0 18px;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            line-height: 1.15;
+        }
+
+        .nzw_heroCopy p {
+            margin: 0 0 26px;
+            max-width: 34em;
+        }
+
+        /* 生成流程：属性 → 脚本 → 真实 SVG，真实顺序 */
+        .nzw_pipeline {
+            margin: 0;
+            padding: 0;
+            border-top: 1px solid var(--nzw-line);
+        }
+
+        .nzw_pipeline li {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 12px;
+            list-style: none;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--nzw-line);
+            font-size: 14px;
+        }
+
+        .nzw_pipeline b {
+            font-family: Consolas, monospace;
+            color: var(--nzw-seal);
+            font-weight: 400;
+        }
+
+        .nzw_pipeline code {
+            font-family: Consolas, monospace;
+            background: rgba(199, 62, 46, 0.1);
+            padding: 1px 6px;
+        }
+
+        /* ===== 样张网格 ===== */
+        .nzw_sectionHead {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 56px 0 22px;
+            padding-top: 26px;
+            border-top: 1px solid var(--nzw-line);
+        }
+
+        .nzw_sectionHead h2 {
+            margin: 0;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 28px;
+            letter-spacing: 0.14em;
+        }
+
+        .nzw_sectionHead span {
+            font-size: 13px;
+            color: var(--nzw-mist);
+        }
+
+        .nzw_specimens {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+            gap: 14px;
+        }
+
+        .nzw_specimen {
+            padding: 22px 16px 16px;
+            border: 1px solid var(--nzw-line);
+            background: #f4f4f0;
+            text-align: center;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .nzw_specimen svg {
+            width: 40px;
+            height: 40px;
+            transition: color 200ms ease, transform 200ms ease;
+        }
+
+        .nzw_specimen:hover svg,
+        .nzw_specimen:focus-visible svg {
+            color: var(--nzw-seal);
+            transform: translateY(-3px);
+        }
+
+        .nzw_specimen:focus-visible {
+            outline: 2px solid var(--nzw-seal);
+            outline-offset: 2px;
+        }
+
+        .nzw_specimen h3 {
+            margin: 14px 0 4px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        .nzw_specimen p {
+            margin: 0;
+            font-family: Consolas, monospace;
+            font-size: 11.5px;
+            color: var(--nzw-mist);
+        }
+
+        /* ===== 解剖一枚图标 ===== */
+        .nzw_anatomy {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+            gap: 14px;
+        }
+
+        .nzw_anatomyView {
+            padding: 24px 26px;
+            border: 1px solid var(--nzw-line);
+            background: #f4f4f0;
+            display: grid;
+            place-items: center;
+        }
+
+        .nzw_anatomyView svg {
+            width: 180px;
+            height: 180px;
+            color: var(--nzw-ink);
+        }
+
+        .nzw_anatomyNote {
+            padding: 24px 26px;
+            border: 1px solid var(--nzw-line);
+            background: #f4f4f0;
+        }
+
+        .nzw_anatomyNote h3 {
+            margin: 0 0 14px;
+            font-size: 15px;
+            letter-spacing: 0.12em;
+            color: var(--nzw-seal);
+            font-weight: 600;
+        }
+
+        .nzw_anatomyNote p {
+            margin: 0 0 14px;
+            font-size: 14px;
+            max-width: 38em;
+        }
+
+        .nzw_svgSource {
+            margin: 0;
+            padding: 14px 16px;
+            background: var(--nzw-ink);
+            color: #dfe7ef;
+            font-family: Consolas, monospace;
+            font-size: 11.5px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .nzw_svgSource em {
+            font-style: normal;
+            color: #e8b04b;
+        }
+
+        /* ===== 页脚 ===== */
+        .nzw_footer {
+            margin-top: 64px;
+            padding-top: 22px;
+            border-top: 1px solid var(--nzw-line);
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            color: var(--nzw-mist);
+        }
+
+        .nzw_footer a {
+            color: var(--nzw-ink);
+            text-decoration: none;
+            border-bottom: 1px solid var(--nzw-seal);
+            padding-bottom: 2px;
+        }
+
+        /* ===== 响应式与偏好 ===== */
+        @media (max-width: 860px) {
+            .nzw_hero { grid-template-columns: 1fr; gap: 30px; padding-top: 40px; }
+            .nzw_heroCopy h1 { font-size: 40px; }
+            .nzw_anatomy { grid-template-columns: 1fr; }
+            .nzw_vertical { writing-mode: horizontal-tb; letter-spacing: 0.3em; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nzw_heroIcon svg :is(path, circle, line, polyline, polygon, rect) {
+                animation: none;
+                stroke-dashoffset: 0;
+            }
+            .nzw_specimen svg { transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="nzw_frame">
+        <div class="nzw_page">
+            <header class="nzw_topbar">
+                <div class="nzw_brand">
+                    <div class="nzw_brandSeal">描</div>
+                    <div>
+                        <h1 class="nzw_brandName">描线房</h1>
+                        <p class="nzw_brandSub">LUCIDE · SVG 图标</p>
+                    </div>
+                </div>
+                <nav class="nzw_nav" aria-label="页面导航">
+                    <a href="index.html">课堂首页</a>
+                    <a href="iconfont-1.html">铸字间 · 字体图标</a>
+                </nav>
+            </header>
+
+            <section class="nzw_hero">
+                <div>
+                    <div class="nzw_stage">
+                        <span class="nzw_stageTag">白描 · 24×24 网格</span>
+                        <span class="nzw_heroIcon" id="nzw_heroIcon">
+                            <i data-lucide="brush" aria-hidden="true"></i>
+                        </span>
+                        <span class="nzw_stageCode">data-lucide="brush"</span>
+                    </div>
+                    <div class="nzw_strokeCtl">
+                        <label for="nzw_strokeSlider">线宽</label>
+                        <input type="range" id="nzw_strokeSlider" min="0.5" max="3.5" step="0.25" value="2" />
+                        <output class="nzw_strokeValue" id="nzw_strokeValue" for="nzw_strokeSlider">2 px</output>
+                    </div>
+                </div>
+                <div class="nzw_heroText">
+                    <p class="nzw_vertical">以线为形</p>
+                    <div class="nzw_heroCopy">
+                        <h1>一枚图标，<br />是一笔一画的线。</h1>
+                        <p>
+                            描线房里没有字体文件。Lucide
+                            把每枚图标写成一段真正的 SVG 路径，浏览器按
+                            <code>currentColor</code> 蘸墨、按网格落笔。于是线宽、
+                            线帽、转角，都像宣纸上的笔锋一样可以随手调整——
+                            拖动滑杆，全页图标同时换笔。
+                        </p>
+                        <ul class="nzw_pipeline">
+                            <li>
+                                <b>01</b>
+                                <span>起稿 —— 在占位元素上写 <code>&lt;i data-lucide="brush"&gt;</code></span>
+                            </li>
+                            <li>
+                                <b>02</b>
+                                <span>运笔 —— 调用 <code>lucide.createIcons()</code>，脚本读取属性</span>
+                            </li>
+                            <li>
+                                <b>03</b>
+                                <span>落墨 —— 占位符被替换成真实 <code>&lt;svg&gt;</code>，见下方解剖</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section aria-labelledby="nzw_specTitle">
+                <div class="nzw_sectionHead">
+                    <h2 id="nzw_specTitle">描线样张</h2>
+                    <span>与铸字间同名对照 · 悬停看蘸朱色</span>
+                </div>
+                <div class="nzw_specimens">
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="camera" aria-hidden="true"></i>
+                        <h3>相机</h3>
+                        <p>camera · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="palette" aria-hidden="true"></i>
+                        <h3>调色盘</h3>
+                        <p>palette · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="brush" aria-hidden="true"></i>
+                        <h3>毛笔</h3>
+                        <p>brush · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="feather" aria-hidden="true"></i>
+                        <h3>羽毛笔</h3>
+                        <p>feather · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="flame" aria-hidden="true"></i>
+                        <h3>火焰</h3>
+                        <p>flame · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <h3>星</h3>
+                        <p>star · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="heart" aria-hidden="true"></i>
+                        <h3>心</h3>
+                        <p>heart · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="music" aria-hidden="true"></i>
+                        <h3>音符</h3>
+                        <p>music · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="zap" aria-hidden="true"></i>
+                        <h3>闪电</h3>
+                        <p>zap · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="moon" aria-hidden="true"></i>
+                        <h3>月</h3>
+                        <p>moon · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="anchor" aria-hidden="true"></i>
+                        <h3>锚</h3>
+                        <p>anchor · 描线</p>
+                    </a>
+                    <a class="nzw_specimen" href="javascript:void(0)">
+                        <i data-lucide="gem" aria-hidden="true"></i>
+                        <h3>宝石</h3>
+                        <p>gem · 描线</p>
+                    </a>
+                </div>
+            </section>
+
+            <section aria-labelledby="nzw_anatomyTitle">
+                <div class="nzw_sectionHead">
+                    <h2 id="nzw_anatomyTitle">解剖一枚图标</h2>
+                    <span>调线宽或悬停样张，源码同步重印</span>
+                </div>
+                <div class="nzw_anatomy">
+                    <div class="nzw_anatomyView" id="nzw_anatomyView">
+                        <i data-lucide="camera" aria-hidden="true"></i>
+                    </div>
+                    <div class="nzw_anatomyNote">
+                        <h3>它不是字符，是几何</h3>
+                        <p>
+                            右侧是页面里真实渲染的 SVG 源码：路径以 24×24
+                            视箱为坐标系，<em>stroke="currentColor"</em>
+                            让线条继承文字颜色，<em>stroke-width</em>
+                            则由页首滑杆驱动——字体图标做不到这一点。
+                        </p>
+                        <pre class="nzw_svgSource" id="nzw_svgSource"></pre>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="nzw_footer">
+                <span>高级网页设计 · 课堂实践 —— SVG 图标篇</span>
+                <span>
+                    <a href="index.html">返回课堂首页</a>
+                    　　
+                    <a href="iconfont-1.html">回铸字间，看字体如何铸形</a>
+                </span>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // 全部变量与函数名以 nzw_ 开头（课程命名规范）
+        var nzw_strokeSlider = document.getElementById("nzw_strokeSlider");
+        var nzw_strokeValue = document.getElementById("nzw_strokeValue");
+        var nzw_svgSource = document.getElementById("nzw_svgSource");
+
+        // 把渲染后的 SVG 源码重印到解剖面板
+        function nzw_printSvgSource() {
+            var nzw_rendered = document.querySelector("#nzw_anatomyView svg");
+            if (!nzw_rendered) { return; }
+            var nzw_mark = nzw_rendered.outerHTML
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;\n")
+                .replace(/stroke-width="[^"]*"/, '<em>$&</em>')
+                .replace(/stroke="currentColor"/, '<em>stroke="currentColor"</em>');
+            nzw_svgSource.innerHTML = nzw_mark.trim();
+        }
+
+        // 线宽滑杆：一个 CSS 变量驱动全页 SVG
+        function nzw_syncStrokeWidth() {
+            var nzw_val = parseFloat(nzw_strokeSlider.value);
+            document.documentElement.style.setProperty("--nzw-stroke", nzw_val);
+            nzw_strokeValue.textContent = nzw_val + " px";
+            nzw_printSvgSource();
+        }
+
+        lucide.createIcons();
+        nzw_strokeSlider.addEventListener("input", nzw_syncStrokeWidth);
+        nzw_syncStrokeWidth();
+
+        // 悬停样张时，解剖面板换成那一枚
+        var nzw_specimenLinks = document.querySelectorAll(".nzw_specimen");
+        nzw_specimenLinks.forEach(function (nzw_link) {
+            nzw_link.addEventListener("mouseenter", function () {
+                var nzw_name = nzw_link.querySelector("[data-lucide]").getAttribute("data-lucide");
+                var nzw_view = document.getElementById("nzw_anatomyView");
+                nzw_view.innerHTML = '<i data-lucide="' + nzw_name + '" aria-hidden="true"></i>';
+                lucide.createIcons();
+                nzw_printSvgSource();
+            });
+        });
+    </script>
+</body>
+</html>
