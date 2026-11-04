@@ -28,6 +28,23 @@ Static course site for 《高级网页设计》 (倪紫微). Pure HTML/CSS/JS: n
 - Branch `master`; remote `origin` = `https://gitee.com/neusoft_wangyao_jsj/webprojectniziwei.git`. Commit messages are in Chinese. No CI.
 - Root `.gitignore` is a stale Flash/Flex template and does not describe this project.
 
+## Code comments
+
+- Every newly created `.html` file starts with a comment block right after `<!DOCTYPE html>`, containing exactly four items: author 倪紫微, creation date (YYYY-MM-DD), the model used, and the page's function name (功能名称). Template:
+
+```html
+<!DOCTYPE html>
+<!--
+  作者：倪紫微
+  建立时间：2026-11-04
+  使用大模型：GLM-5.3-Flash
+  功能名称：页面功能的一句话说明
+-->
+<html lang="zh-CN">
+```
+
+- Every function in inline `<script>` blocks (and standalone `.js` files) carries a one-line comment above it describing what the function mainly does. Trivial one-liners (e.g. a single assignment) may skip it.
+
 ## Windows note
 
 - Paths contain Chinese characters and PowerShell 5.1 garbles them in console output. Use `-LiteralPath` and the Read/Edit tools; don't trust console-rendered Chinese when confirming file contents.

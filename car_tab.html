@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+  作者：倪紫微
+  建立时间：2026-11-04
+  使用大模型：GLM-5.3-Flash
+  功能名称：汽车上市信息选项卡表格（最新上市 / 即将上市）
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>汽车上市信息 — 选项卡表格样张</title>
+    <!-- 复用 js/tab.js 的选项卡组件：两个选择器都要实现，内容暂时一样 -->
+    <script src="js/tab.js" defer></script>
+    <style>
+        :root {
+            --nzw-navy: #2e62a8;        /* 标签选中：深蓝 */
+            --nzw-headText: #1f4e79;    /* 表头文字：藏蓝 */
+            --nzw-headBg: #dce6f2;      /* 表头底：淡蓝 */
+            --nzw-border: #b3c4d8;      /* 表格线 */
+            --nzw-tabBg: #efefef;       /* 未选中标签底 */
+            --nzw-text: #333333;        /* 正文 */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #f4f6f8;
+            color: var(--nzw-text);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        .nzw_page {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 34px 20px 60px;
+        }
+
+        .nzw_topbar {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 26px;
+            border-bottom: 1px solid var(--nzw-border);
+            padding-bottom: 12px;
+        }
+
+        .nzw_topbar h1 {
+            margin: 0;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 24px;
+            letter-spacing: 0.1em;
+        }
+
+        .nzw_topbar a {
+            color: var(--nzw-text);
+            font-size: 13.5px;
+            text-decoration: none;
+            border-bottom: 1px solid var(--nzw-navy);
+            padding-bottom: 2px;
+        }
+
+        /* ===== 一比一还原的组件：宽约 300px ===== */
+        .nzw_tabGroup {
+            width: 304px;
+        }
+
+        .nzw_tabList {
+            display: flex;
+            border-bottom: 0;
+        }
+
+        .nzw_tabBtn {
+            appearance: none;
+            border: 1px solid var(--nzw-border);
+            border-bottom: 0;
+            background: var(--nzw-tabBg);
+            color: var(--nzw-text);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 7px 22px;
+            cursor: pointer;
+            margin-right: 4px;
+            position: relative;
+            top: 1px;
+        }
+
+        .nzw_tabBtn:focus-visible {
+            outline: 2px solid var(--nzw-navy);
+            outline-offset: -2px;
+        }
+
+        /* 选中标签：深蓝底白字，压住表格上边线 */
+        .nzw_tabBtn.nzw_isActive {
+            background: var(--nzw-navy);
+            color: #ffffff;
+        }
+
+        .nzw_tabPanel { display: none; }
+
+        .nzw_tabPanel.nzw_isActive { display: block; }
+
+        .nzw_carTable {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--nzw-border);
+            font-size: 12.5px;
+        }
+
+        .nzw_carTable th,
+        .nzw_carTable td {
+            border: 1px solid var(--nzw-border);
+            padding: 6px 10px;
+            text-align: left;
+            font-weight: 400;
+        }
+
+        .nzw_carTable th {
+            background: var(--nzw-headBg);
+            color: var(--nzw-headText);
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .nzw_carTable td { background: #ffffff; }
+
+        .nzw_carTable .nzw_colDate { width: 72px; }
+
+        .nzw_carTable .nzw_colPrice { width: 96px; }
+    </style>
+</head>
+<body>
+    <div class="nzw_page">
+        <header class="nzw_topbar">
+            <h1>汽车上市信息</h1>
+            <a href="index.html">返回课堂首页</a>
+        </header>
+
+        <main>
+            <div class="nzw_tabGroup">
+                <div class="nzw_tabList" role="tablist" aria-label="上市信息分类">
+                    <button class="nzw_tabBtn nzw_isActive" type="button" role="tab"
+                            aria-selected="true" data-nzw-panel="nzw_panelNew">最新上市</button>
+                    <button class="nzw_tabBtn" type="button" role="tab"
+                            aria-selected="false" data-nzw-panel="nzw_panelSoon">即将上市</button>
+                </div>
+
+                <section class="nzw_tabPanel nzw_isActive" id="nzw_panelNew" role="tabpanel">
+                    <table class="nzw_carTable">
+                        <thead>
+                            <tr>
+                                <th class="nzw_colDate">上市时间</th>
+                                <th>品牌/车型</th>
+                                <th class="nzw_colPrice">售价（万元）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12月13日</td>
+                                <td>沃尔沃S60L</td>
+                                <td>26.98-38.49</td>
+                            </tr>
+                            <tr>
+                                <td>12月12日</td>
+                                <td>Jeep牧马人龙腾典藏</td>
+                                <td>47.99-59.99</td>
+                            </tr>
+                            <tr>
+                                <td>12月10日</td>
+                                <td>一汽大众高尔夫7</td>
+                                <td>11.89-18.29</td>
+                            </tr>
+                            <tr>
+                                <td>12月6日</td>
+                                <td>2014款古思特</td>
+                                <td>419.0-666.0</td>
+                            </tr>
+                            <tr>
+                                <td>12月5日</td>
+                                <td>起亚新K5</td>
+                                <td>15.98-25.18</td>
+                            </tr>
+                            <tr>
+                                <td>12月5日</td>
+                                <td>2014款奥德赛</td>
+                                <td>22.98-28.68</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="nzw_tabPanel" id="nzw_panelSoon" role="tabpanel">
+                    <table class="nzw_carTable">
+                        <thead>
+                            <tr>
+                                <th class="nzw_colDate">上市时间</th>
+                                <th>品牌/车型</th>
+                                <th class="nzw_colPrice">售价（万元）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12月13日</td>
+                                <td>沃尔沃S60L</td>
+                                <td>26.98-38.49</td>
+                            </tr>
+                            <tr>
+                                <td>12月12日</td>
+                                <td>Jeep牧马人龙腾典藏</td>
+                                <td>47.99-59.99</td>
+                            </tr>
+                            <tr>
+                                <td>12月10日</td>
+                                <td>一汽大众高尔夫7</td>
+                                <td>11.89-18.29</td>
+                            </tr>
+                            <tr>
+                                <td>12月6日</td>
+                                <td>2014款古思特</td>
+                                <td>419.0-666.0</td>
+                            </tr>
+                            <tr>
+                                <td>12月5日</td>
+                                <td>起亚新K5</td>
+                                <td>15.98-25.18</td>
+                            </tr>
+                            <tr>
+                                <td>12月5日</td>
+                                <td>2014款奥德赛</td>
+                                <td>22.98-28.68</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <p style="margin: 26px 0 0; font-size: 13px; color: #64707d;">
+                倪紫微 · 高级网页设计课堂样张 — 依课堂示例图 1:1 还原，两个选择器内容暂相同
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

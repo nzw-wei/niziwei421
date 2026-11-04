@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<!--
+  作者：倪紫微
+  建立时间：2026-11-04
+  使用大模型：GLM-5.3-Flash
+  功能名称：Tab 选项卡 — 四类新闻切换
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tab 选项卡 — 新闻切换样张</title>
+    <!-- 可复用的选项卡逻辑在 js/tab.js 中，此处外部引用 -->
+    <script src="js/tab.js" defer></script>
+    <style>
+        :root {
+            --nzw-paper: #ecefea;      /* 瓷灰：纸面 */
+            --nzw-ink: #1e3a5f;        /* 靛青：墨色 */
+            --nzw-seal: #c73e2e;       /* 朱砂：选中 */
+            --nzw-mist: #64707d;       /* 淡墨：辅助文字 */
+            --nzw-line: rgba(30, 58, 95, 0.28);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--nzw-paper);
+            color: var(--nzw-ink);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            line-height: 1.7;
+        }
+
+        .nzw_page {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 22px 60px;
+        }
+
+        .nzw_topbar {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 28px;
+            border-bottom: 1px solid var(--nzw-line);
+            padding-bottom: 14px;
+        }
+
+        .nzw_topbar h1 {
+            margin: 0;
+            font-family: "SimSun", "Songti SC", serif;
+            font-size: 26px;
+            letter-spacing: 0.12em;
+        }
+
+        .nzw_topbar a {
+            color: var(--nzw-ink);
+            font-size: 13.5px;
+            text-decoration: none;
+            border-bottom: 1px solid var(--nzw-seal);
+            padding-bottom: 2px;
+        }
+
+        /* ===== 选项卡 ===== */
+        .nzw_tabList {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--nzw-line);
+        }
+
+        .nzw_tabBtn {
+            appearance: none;
+            background: transparent;
+            border: 0;
+            padding: 11px 20px;
+            font-family: inherit;
+            font-size: 15px;
+            letter-spacing: 0.06em;
+            color: var(--nzw-mist);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nzw_tabBtn:hover { color: var(--nzw-ink); }
+
+        .nzw_tabBtn:focus-visible {
+            outline: 2px solid var(--nzw-seal);
+            outline-offset: -2px;
+        }
+
+        /* 选中态：文字上墨、底部朱砂签压住标签栏的细线 */
+        .nzw_tabBtn.nzw_isActive {
+            color: var(--nzw-ink);
+            font-weight: 700;
+        }
+
+        .nzw_tabBtn.nzw_isActive::after {
+            content: "";
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: -2px;
+            height: 2px;
+            background: var(--nzw-seal);
+        }
+
+        /* 面板：默认隐藏，选中才展开 */
+        .nzw_tabPanel { display: none; padding-top: 20px; }
+
+        .nzw_tabPanel.nzw_isActive { display: block; }
+
+        .nzw_newsList {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .nzw_newsList li {
+            padding: 14px 2px;
+            border-bottom: 1px dashed var(--nzw-line);
+        }
+
+        .nzw_newsList h3 {
+            margin: 0 0 4px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .nzw_newsList span {
+            font-size: 12.5px;
+            color: var(--nzw-mist);
+        }
+    </style>
+</head>
+<body>
+    <div class="nzw_page">
+        <header class="nzw_topbar">
+            <h1>新闻选项卡</h1>
+            <a href="index.html">返回课堂首页</a>
+        </header>
+
+        <main>
+            <div class="nzw_tabGroup">
+                <div class="nzw_tabList" role="tablist" aria-label="新闻分类">
+                    <button class="nzw_tabBtn nzw_isActive" type="button" role="tab"
+                            aria-selected="true" data-nzw-panel="nzw_panelDomestic">国内新闻</button>
+                    <button class="nzw_tabBtn" type="button" role="tab"
+                            aria-selected="false" data-nzw-panel="nzw_panelProvince">省内新闻</button>
+                    <button class="nzw_tabBtn" type="button" role="tab"
+                            aria-selected="false" data-nzw-panel="nzw_panelWorld">国际新闻</button>
+                    <button class="nzw_tabBtn" type="button" role="tab"
+                            aria-selected="false" data-nzw-panel="nzw_panelHot">最热新闻</button>
+                </div>
+
+                <section class="nzw_tabPanel nzw_isActive" id="nzw_panelDomestic" role="tabpanel">
+                    <ul class="nzw_newsList">
+                        <li>
+                            <h3>全国数字教育推进周启动，多校共享课程资源平台</h3>
+                            <span>新华社 · 11-04</span>
+                        </li>
+                        <li>
+                            <h3>城市更新行动稳步推进，老旧小区改造惠及百万家庭</h3>
+                            <span>人民日报 · 11-03</span>
+                        </li>
+                        <li>
+                            <h3>秋粮收购全面展开，主产区仓容准备充足</h3>
+                            <span>央视新闻 · 11-02</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="nzw_tabPanel" id="nzw_panelProvince" role="tabpanel">
+                    <ul class="nzw_newsList">
+                        <li>
+                            <h3>辽宁自贸区新增三家数字化转型示范企业</h3>
+                            <span>辽宁日报 · 11-04</span>
+                        </li>
+                        <li>
+                            <h3>大连软件产业规模持续扩大，年内新增就业岗位过万</h3>
+                            <span>大连发布 · 11-03</span>
+                        </li>
+                        <li>
+                            <h3>省内高校实验实训基地共建签约仪式举行</h3>
+                            <span>东北新闻网 · 11-01</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="nzw_tabPanel" id="nzw_panelWorld" role="tabpanel">
+                    <ul class="nzw_newsList">
+                        <li>
+                            <h3>多国代表呼吁加强人工智能领域国际合作治理</h3>
+                            <span>新华网 · 11-04</span>
+                        </li>
+                        <li>
+                            <h3>全球绿色能源装机容量再创新高，光伏贡献过半</h3>
+                            <span>央视新闻 · 11-03</span>
+                        </li>
+                        <li>
+                            <h3>国际航空展闭幕，客机节能减排技术成焦点</h3>
+                            <span>参考消息 · 11-02</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="nzw_tabPanel" id="nzw_panelHot" role="tabpanel">
+                    <ul class="nzw_newsList">
+                        <li>
+                            <h3>热搜第一：高校"AI 通识课"开课首日选课系统挤爆</h3>
+                            <span>微博热点 · 11-04</span>
+                        </li>
+                        <li>
+                            <h3>热议：城市"一刻钟便民生活圈"如何建得更好</h3>
+                            <span>澎湃新闻 · 11-04</span>
+                        </li>
+                        <li>
+                            <h3>刷屏：故宫数字文物库新增十万件高清藏品</h3>
+                            <span>人民网 · 11-03</span>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <p style="margin: 28px 0 0; font-size: 13px; color: var(--nzw-mist);">
+                倪紫微 · 高级网页设计课堂样张 — 新闻内容为课堂演示示例数据
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
