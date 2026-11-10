@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- 复刻自 Swiper 官方示例 demo/257-effect-creative.html（npm 11.2.10 包未含 demo 目录，本文件依据官方 demos 源码复刻，图片改用本项目 swiper-imgs）
+     用途：任务二 学习 creativeEffect 的 transform 写法 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>官方示例复刻 · 257-effect-creative（creative 自定义变换）</title>
+<link rel="stylesheet" href="../../cdn/swiper/swiper-bundle.min.css">
+<style>
+  body{font-family:"Microsoft YaHei",sans-serif;background:#f6f8fc;padding:40px 20px;text-align:center}
+  .swiper{width:520px;height:340px;margin:0 auto;border-radius:12px}
+  .swiper-slide img{width:100%;height:100%;object-fit:cover;display:block}
+  .tip{max-width:640px;margin:0 auto 24px;text-align:left;background:#fffbea;border:1px solid #fde68a;border-radius:12px;padding:14px 18px;font-size:13.5px;color:#7c5e10;line-height:2}
+  .tip code{background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px;font-family:Consolas,monospace}
+  .back{display:inline-block;margin-top:26px;color:#0f2b5b;text-decoration:none;font-weight:bold}
+</style>
+</head>
+<body>
+  <div class="tip">
+    <b>官方示例复刻 · creative 自定义变换。</b><br>
+    看初始化代码里的 <code>creativeEffect</code>：<code>prev</code> 决定"上一张"过渡时怎么变，<code>next</code> 决定"下一张"怎么变；<br>
+    <code>translate</code> 三项分别是 [x, y, z]（x/y 支持百分比，相对容器宽高；z 是像素，负值远离镜头变小、正值靠近镜头变大）；<br>
+    <code>rotate</code> 三项是绕 X / Y / Z 轴的角度（deg），第三项绕 Z 轴转就是平面内歪斜。
+  </div>
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="../../swiper-imgs/tiangong_1.jpg" alt="天宫空间站"></div>
+      <div class="swiper-slide"><img src="../../swiper-imgs/fuxing_1.jpg" alt="复兴号动车组"></div>
+      <div class="swiper-slide"><img src="../../swiper-imgs/c919_1.jpg" alt="C919大飞机"></div>
+      <div class="swiper-slide"><img src="../../swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"></div>
+      <div class="swiper-slide"><img src="../../swiper-imgs/fast_1.jpg" alt="中国天眼"></div>
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+  <a class="back" href="../../index.html">← 返回课堂首页</a>
+<script src="../../cdn/swiper/swiper-bundle.min.js"></script>
+<script>
+  // 官方 257 示例的原始参数：两侧卡片绕 Z 轴 ±90 度、飞出画外并后退 800px
+  new Swiper('.swiper', {
+    effect: 'creative',
+    grabCursor: true,
+    pagination: { clickable: true },
+    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    creativeEffect: {
+      prev: {
+        shadow: true,
+        translate: ['-125%', 0, -800],
+        rotate: [0, 0, -90]
+      },
+      next: {
+        shadow: true,
+        translate: ['125%', 0, -800],
+        rotate: [0, 0, 90]
+      }
+    }
+  });
+</script>
+</body>
+</html>

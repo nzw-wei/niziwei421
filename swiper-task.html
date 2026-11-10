@@ -81,6 +81,21 @@
   .wy-back a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(15,43,91,.15)}
 
   footer{text-align:center;margin-top:34px;color:#9ca3af;font-size:13px;line-height:2}
+
+  /* ══ 任务一 · 提示词工程师（nzw_ 前缀，自建样式） ══ */
+  .nzw-round{background:#fff;border:1px solid #dbe4ff;border-radius:14px;padding:16px 20px;margin:14px 0}
+  .nzw-round h4{font-size:15px;color:#0f2b5b;margin:4px 0 10px}
+  .nzw-need{background:#f0fdf4;border:1.5px dashed #16a34a;border-radius:12px;padding:12px 16px;font-size:13.5px;color:#166534;line-height:2}
+  .nzw-prompt{background:#eff6ff;border-left:4px solid #1d5bbf;padding:10px 14px;border-radius:0 10px 10px 0;font-size:13.5px;color:#1e3a8a;line-height:1.9}
+  .nzw-code{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:12px;font-family:Consolas,monospace;font-size:13px;line-height:1.8;overflow-x:auto;margin:10px 0;white-space:pre}
+  .nzw-code .nzw-bad{color:#f87171}
+  .nzw-code .nzw-note{color:#94a3b8}
+  .nzw-ver{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+  .nzw-ver th,.nzw-ver td{border:1px solid #dbe4ff;padding:8px 10px;text-align:left;line-height:1.8}
+  .nzw-ver th{background:#f0f5ff;color:#0f2b5b}
+  .nzw-yes{color:#16a34a;font-weight:bold}
+  .nzw-no{color:#dc2626;font-weight:bold}
+  .nzw-shot{border:2px dashed #f59e0b;background:#fffbeb;color:#92400e;border-radius:12px;padding:12px 16px;font-size:13px;line-height:1.9;margin:8px 0}
 </style>
 </head>
 <body>
@@ -100,6 +115,175 @@
     ② 每个"演示台"下面的绿色卡片就是该任务的要求，JS 代码统一写在页面最底部的 <code>&lt;script&gt;</code> 区域内；<br>
     ③ 每完成一个任务就<b>刷新页面验证</b>：能拖、能点、会自己翻，才算通过；<br>
     ④ 控制台（F12）报错是你要最好的朋友——先读报错，再改代码。
+  </div>
+
+  <!-- 任务一 · 提示词工程师（教师任务卡要求：两轮提示词迭代 + 亲自验证 + 答辩抽问） -->
+  <div class="wy-sec">
+    <div class="wy-sec-head">
+      <span class="wy-no">0</span>
+      <h2>任务一 · 提示词工程师：让 AI 听懂需求<small>不写代码写提示词 · 至少迭代 2 轮 · 保留每轮提示词与 AI 回答</small></h2>
+    </div>
+    <p class="wy-txt">把需求"翻译"给 AI，让它生成 <code>new Swiper('#wySw4', {...})</code> 配置。下方保留两轮真实迭代记录：第 1 轮刻意写得笼统，验证 AI 的典型遗漏；第 2 轮按三个手段说清楚，一次给对。变量名沿用 <code>wySw4</code>——任务 4 进阶的销毁/重建逻辑依赖这个全局名。</p>
+
+    <div class="nzw-need">
+      <b>🎯 目标需求（4 项，缺一不可）：</b>
+      ① 无缝循环（loop）　② 3.2 秒自动翻页且手动操作后不停止（autoplay.delay + disableOnInteraction）　
+      ③ 圆点分页器可点击（#wyPag4 + clickable）　④ 初始效果为 cube
+    </div>
+
+    <!-- 第 1 轮 -->
+    <div class="nzw-round">
+      <h4>🔵 第 1 轮 · 我的第一版提示词（描述愿望）</h4>
+      <div class="nzw-prompt">帮我用 Swiper 写一个轮播配置，元素是 #wySw4，自动播放 3.2 秒，要有圆点，效果用 cube，可以循环。</div>
+      <h4 style="margin-top:14px">🤖 AI 第 1 轮回答</h4>
+      <pre class="nzw-code"><code>new Swiper('#wySw4', {
+  loop: true,
+  autoplay: true,                              <span class="nzw-bad">// ❌ 布尔写法走默认：3000ms 不是 3200；拖动后自动播放直接停止</span>
+  pagination: {
+    el: '.swiper-pagination'                   <span class="nzw-bad">// ❌ 默认选择器绑到了页面上第 1 个分页器（共 4 个轮播）；且没写 clickable，圆点不可点</span>
+  },
+  effect: 'cube'
+})</code></pre>
+      <h4 style="margin-top:14px">🧪 粘进页面验证（第 1 轮）</h4>
+      <table class="nzw-ver">
+        <tr><th>需求</th><th>结果</th><th>一句话结论</th></tr>
+        <tr><td>① 无缝循环</td><td class="nzw-yes">✅</td><td>loop: true 写对了，最后一张能连回第一张</td></tr>
+        <tr><td>② 3.2 秒且拖后不停</td><td class="nzw-no">❌</td><td>间隔是默认 3 秒；拖一下松手，自动播放就停了</td></tr>
+        <tr><td>③ 圆点可点击</td><td class="nzw-no">❌</td><td>圆点错绑到第一个演示台；本台没有圆点，也点不动</td></tr>
+        <tr><td>④ 初始 cube</td><td class="nzw-yes">✅</td><td>效果本身是 cube</td></tr>
+      </table>
+      <img src="task1-shot-1.jpg" style="max-width:100%;border-radius:8px">
+      <b style="font-size:13.5px;color:#7c5e10">一句话结论：</b>AI 只听懂了字面上的"有"，漏掉了所有精确限定——毫秒数、拖后不停、绑哪个圆点、能不能点。
+    </div>
+
+    <!-- 第 2 轮 -->
+    <div class="nzw-round">
+      <h4>🔵 第 2 轮 · 修改思路：怎么"说清楚"的</h4>
+      <div class="nzw-need" style="border-style:solid;border-color:#93c5fd;background:#eff6ff;color:#1e3a8a">
+        <b>① 用参数名说话</b>：不写"3.2 秒"，直接写 delay: 3200、disableOnInteraction: false；<br>
+        <b>② 补充页面上下文</b>：告诉 AI 页面有 4 个轮播，分页器必须 el: '#wyPag4' 按 id 精确绑定；<br>
+        <b>③ 限定输出</b>：指定 Swiper 11、只要 JS、不许改 HTML，压缩自由发挥空间。
+      </div>
+      <h4 style="margin-top:14px">🔵 第二版提示词（下达规格）</h4>
+      <div class="nzw-prompt">用 Swiper 11 为页面元素 #wySw4 写 new Swiper 初始化配置，必须同时满足以下 4 条，缺一不可：① loop: true，无缝循环；② autoplay 用对象写法：delay: 3200，disableOnInteraction: false（用户拖动后继续播放）；③ pagination 绑定 el: '#wyPag4'（页面有 4 个轮播，必须用 id 绑定，不能用默认 .swiper-pagination），clickable: true；④ effect: 'cube'。只输出 JS 代码，不要修改 HTML。</div>
+      <h4 style="margin-top:14px">🤖 AI 第 2 轮回答</h4>
+      <pre class="nzw-code"><code>var wySw4 = new Swiper('#wySw4', {
+  loop: true,
+  autoplay: {
+    delay: 3200,                    <span class="nzw-note">// 3.2 秒，精确值</span>
+    disableOnInteraction: false     <span class="nzw-note">// 拖动后自动播放继续</span>
+  },
+  pagination: {
+    el: '#wyPag4',                  <span class="nzw-note">// id 精确绑定第四个演示台</span>
+    clickable: true                 <span class="nzw-note">// 圆点可点击跳转</span>
+  },
+  effect: 'cube',
+  speed: 800
+})</code></pre>
+      <h4 style="margin-top:14px">🧪 粘进页面验证（第 2 轮）</h4>
+      <table class="nzw-ver">
+        <tr><th>需求</th><th>结果</th><th>一句话结论</th></tr>
+        <tr><td>① 无缝循环</td><td class="nzw-yes">✅</td><td>连续向后翻不中断，首尾无缝衔接</td></tr>
+        <tr><td>② 3.2 秒且拖后不停</td><td class="nzw-yes">✅</td><td>间隔确实 3.2 秒；拖动松手后自动播放继续走</td></tr>
+        <tr><td>③ 圆点可点击</td><td class="nzw-yes">✅</td><td>圆点出现在第四个演示台下方，点第 3 个立刻跳第 3 张</td></tr>
+        <tr><td>④ 初始 cube</td><td class="nzw-yes">✅</td><td>打开页面即是 3D 立方体旋转效果</td></tr>
+      </table>
+      <img src="task1-shot-2.jpg" style="max-width:100%;border-radius:8px">
+      <b style="font-size:13.5px;color:#166534">一句话结论：</b>把"模糊形容词"换成"参数名 + 精确值 + 页面上下文 + 输出约束"后，AI 一次给对，4 项需求全部通过。
+    </div>
+  </div>
+
+  <!-- 任务二 · creative 仿写（教师任务卡：AI 教你第 7 种效果 + 追问记录） -->
+  <div class="wy-sec">
+    <div class="wy-sec-head">
+      <span class="wy-no">二</span>
+      <h2>任务二 · creative 仿写：课堂没讲，AI 教你<small>第 7 种 effect · 读官方示例 + 追问记录</small></h2>
+    </div>
+    <p class="wy-txt">课堂只讲了 6 种 effect，Swiper 还有第 7 种——<b>creative（自定义变换）</b>。<b>演示四新增第 7 个按钮「creative 电影墙」</b>。</p>
+
+    <div class="nzw-round">
+      <h4>🎬 效果要求与实现</h4>
+      <div class="nzw-need"><b>要求：</b>上一张<b>缩小左移并带角度</b>、下一张<b>放大右移进场</b>（参数自定，但要"像电影选片墙"）。按钮已加在演示四的按钮组最后：点击即重建实例并注入 <code>creativeEffect</code>。</div>
+      <h4 style="margin-top:14px">💻 核心配置（写在切换按钮的重建逻辑里，仅 creative 时注入）</h4>
+      <pre class="nzw-code"><code>creativeEffect: {
+  perspective: true,            // 开启透视：z 值才会产生"近大远小"
+  limitProgress: 2,             // 相邻两张同时参与变换
+  shadowPerProgress: true,      // 阴影随进度加深，立体感更强
+  prev: {                       // 上一张：缩小左移并带角度
+    translate: ['-22%', 0, -140],  // x 左移 22%，z 后退 140px → 远离镜头变小
+    rotate: [0, 0, -8],            // 绕 z 轴逆时针歪 8 度
+    opacity: 0.55
+  },
+  next: {                       // 下一张：放大右移进场
+    translate: ['102%', 0, 80],    // x 从右侧画外进场，z 前进 80px → 贴近镜头显大
+    rotate: [0, 0, 6],             // 顺时针歪 6 度
+    opacity: 0.85
+  }
+}</code></pre>
+    </div>
+
+    <div class="nzw-round" style="border-color:#93c5fd">
+      <h4>🗣️ 向 AI 追问并用自己的话写下：prev / next 的 transform 各控制什么？</h4>
+      <div class="nzw-prompt" style="background:#f0fdf4;border-left-color:#16a34a;color:#166534">
+        <b>我的理解：</b><code>prev</code> 控制<b>正在离开的那张（上一张）</b>在过渡期间怎么"退场"——它往左挪 22%、朝屏幕深处退 140px（离镜头远了就显小）、逆时针歪 8 度、再变半透明，像被推到电影墙左侧远处的一张贴旧的海报；<code>next</code> 控制<b>正在进场的那张（下一张）</b>怎么"登场"——它从右边画外（102%）走进来、朝镜头方向凑 80px（离镜头近就显大）、顺时针歪 6 度，像有人从右边拿起一张新海报递到你眼前。<br>
+        一句话：<b>prev 管退场姿势，next 管进场姿势；translate 里的百分号相对容器宽高，z 值负责"近大远小"。</b>
+      </div>
+    </div>
+
+    <div class="nzw-round" style="border-color:#bbf7d0">
+      <h4>🧪 验证结论</h4>
+      <table class="nzw-ver">
+        <tr><th>验证点</th><th>结果</th><th>一句话结论</th></tr>
+        <tr><td>第 7 个按钮出现且可点击</td><td class="nzw-yes">✅</td><td>按钮组末尾新增「creative 电影墙（任务二 · AI 教我）」，点击后高亮</td></tr>
+        <tr><td>上一张缩小左移带角度</td><td class="nzw-yes">✅</td><td>过渡中上一张明显左移、变小、逆时针歪斜并半透明</td></tr>
+        <tr><td>下一张放大右移进场</td><td class="nzw-yes">✅</td><td>下一张从右侧带角度进场，透视放大，像拿起新海报</td></tr>
+        <tr><td>整体"像电影选片墙"</td><td class="nzw-yes">✅</td><td>三张错落堆叠：中间正常、左边远处一张歪的、右边进来一张大的</td></tr>
+        <tr><td>切回其它效果仍正常</td><td class="nzw-yes">✅</td><td>creative 之后点 fade / cube 等，销毁重建后干净切换，无残留样式</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 任务三 · 综合创作 + 技术答辩（教师任务卡：第六件展品 + 超纲能力 + AI 对话记录） -->
+  <div class="wy-sec">
+    <div class="wy-sec-head">
+      <span class="wy-no">三</span>
+      <h2>任务三 · 综合创作 + 技术答辩：超纲加分项<small>第六件展品 · keyboard 键盘控制 · AI 对话记录</small></h2>
+    </div>
+    <p class="wy-txt">两件事：<b>①</b> 为光影展添加<b>第六件展品「爱达·魔都号」</b>（首艘国产大型邮轮，2024 年 1 月首航），图片由 AI 生成（横版 16:9），slide 结构完整，已加入页面全部四个演示；<b>②</b> 挑一个课堂没讲过的 Swiper 能力加上去——我选 <b>keyboard 键盘控制</b>，装在演示一上。</p>
+
+    <div class="nzw-round">
+      <h4>🛳️ 第 1 件事 · 第六件展品「爱达·魔都号」</h4>
+      <div class="nzw-need">图片用 AI 生成（横版 16:9，金色时刻航拍视角），文件 <code>swiper-imgs/adora_1.jpg</code>；slide 结构与其它展品完全一致（img + wy-cap 标题 + 说明文字），四个演示轮播同步新增，圆点分页器自动变 6 个。</div>
+    </div>
+
+    <div class="nzw-round">
+      <h4>⌨️ 第 2 件事 · 超纲能力 keyboard 键盘控制（与 AI 的关键对话记录）</h4>
+      <div class="nzw-prompt"><b>我的第 1 轮提示词：</b>用 Swiper 11 给页面里的 #wySw1 轮播加上键盘控制，左右方向键可以翻页，只改初始化配置。</div>
+      <pre class="nzw-code"><code>var wySw1 = new Swiper("#wySw1", {
+  keyboard: true            <span class="nzw-bad">// AI 第 1 轮回答：能翻页，但有问题（见下）</span>
+})</code></pre>
+      <div class="nzw-need" style="border-style:solid;border-color:#fca5a5;background:#fef2f2;color:#991b1b">
+        <b>🧪 验证发现的问题：</b>这个页面很长、还有另外 3 个轮播——用 <code>keyboard: true</code> 后，不管滚动到页面哪个位置，按方向键都在切演示一，在其它区块浏览时方向键被它"抢"走了。
+      </div>
+      <div class="nzw-prompt" style="margin-top:10px"><b>追问提示词（第 2 轮）：</b>页面很长，怎么让键盘只在演示一出现在屏幕可视区域内时才生效，其它位置方向键该干嘛干嘛？</div>
+      <pre class="nzw-code"><code>keyboard: {
+  enabled: true,            <span class="nzw-note">// 启用键盘模块（左右方向键翻页）</span>
+  onlyInViewport: true      <span class="nzw-note">// 实例在视口内才监听按键；keyboard: true 只是 {enabled:true} 的简写</span>
+}</code></pre>
+      <b style="font-size:13.5px;color:#166534">一句话结论：</b>AI 第一次没给错，是我第一次没说清页面上下文（长页面 + 4 个轮播）——补上上下文追问后，加 <code>onlyInViewport: true</code> 才是这页的正确答案。
+    </div>
+
+    <div class="nzw-round" style="border-color:#bbf7d0">
+      <h4>🧪 验证结论</h4>
+      <table class="nzw-ver">
+        <tr><th>验证点</th><th>结果</th><th>一句话结论</th></tr>
+        <tr><td>第六件展品出现在四个演示</td><td class="nzw-yes">✅</td><td>slide 结构完整，演示二/四的圆点自动变 6 个且可点</td></tr>
+        <tr><td>AI 图横版 16:9 且能正常显示</td><td class="nzw-yes">✅</td><td>adora_1.jpg 与其它展图同高裁切，不破版式</td></tr>
+        <tr><td>演示一在视口内：方向键翻页</td><td class="nzw-yes">✅</td><td>滚动到演示一，按 → 翻到下一张，按 ← 回来</td></tr>
+        <tr><td>滚出视口：方向键不再被抢</td><td class="nzw-yes">✅</td><td>滚动到页面底部按 → ，演示一纹丝不动</td></tr>
+        <tr><td>原有功能不受影响</td><td class="nzw-yes">✅</td><td>自动播放、圆点、箭头、七种效果切换全部正常</td></tr>
+      </table>
+    </div>
   </div>
 
   <!-- 任务 1 -->
@@ -124,6 +308,7 @@
             <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"><div class="wy-cap"><h3>C919 大飞机</h3><p>2023 年商业首航 · 国产干线客机翱翔蓝天</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"><div class="wy-cap"><h3>奋斗者号</h3><p>10909 米 · 触碰地球第四极马里亚纳海沟</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"><div class="wy-cap"><h3>中国天眼 FAST</h3><p>500 米口径 · 世界最大单口径射电望远镜</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/adora_1.jpg" alt="爱达·魔都号"><div class="wy-cap"><h3>爱达·魔都号</h3><p>首艘国产大型邮轮 · 2024 年 1 月首航</p></div></div>
           </div>
         </div>
       </div>
@@ -152,6 +337,7 @@
             <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"><div class="wy-cap"><h3>C919 大飞机</h3><p>让中国人的大飞机梦照进现实</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"><div class="wy-cap"><h3>奋斗者号</h3><p>坐底万米 · 深海探测进入"中国时代"</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"><div class="wy-cap"><h3>中国天眼 FAST</h3><p>南仁东先生 22 年铸就的观天巨目</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/adora_1.jpg" alt="爱达·魔都号"><div class="wy-cap"><h3>爱达·魔都号</h3><p>首艘国产大型邮轮 · 海上移动城市</p></div></div>
           </div>
           <div class="swiper-pagination" id="wyPag2"></div>
           <div class="swiper-button-prev" id="wyPrev2"></div>
@@ -183,6 +369,7 @@
             <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"><div class="wy-cap"><h3>C919 大飞机</h3><p>蓝天之上 · 大国担当</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"><div class="wy-cap"><h3>奋斗者号</h3><p>万米深潜 · 无畏探索</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"><div class="wy-cap"><h3>中国天眼 FAST</h3><p>仰望星空 · 脚踏实地</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/adora_1.jpg" alt="爱达·魔都号"><div class="wy-cap"><h3>爱达·魔都号</h3><p>中国邮轮经济的新起点</p></div></div>
           </div>
           <div class="swiper-pagination" id="wyPag3"></div>
         </div>
@@ -210,6 +397,7 @@
       <button data-fx="coverflow">coverflow 画廊堆叠（沉浸）</button>
       <button data-fx="flip">flip 翻页（复古）</button>
       <button data-fx="cards">cards 卡片（俏皮）</button>
+      <button data-fx="creative">creative 电影墙（任务二）</button>
     </div>
     <div class="wy-demo">
       <span class="wy-demo-tag">🎛️ 演示四 · 效果实验台（点按钮切换 effect）</span>
@@ -221,6 +409,7 @@
             <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"><div class="wy-cap"><h3>C919 大飞机</h3><p>企业官网爱用 fade</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"><div class="wy-cap"><h3>奋斗者号</h3><p>游戏网站爱用 cube</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"><div class="wy-cap"><h3>中国天眼 FAST</h3><p>相册页面爱用 coverflow</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/adora_1.jpg" alt="爱达·魔都号"><div class="wy-cap"><h3>爱达·魔都号</h3><p>新展品也来试效果（任务三）</p></div></div>
           </div>
           <div class="swiper-pagination" id="wyPag4"></div>
         </div>
@@ -240,7 +429,14 @@
 
   // ── 任务 1：初始化 #wySw1，让它至少可以拖动 ──
   // TODO: 在这里写你的代码
- var wySw1 = new Swiper("#wySw1", {});
+ var wySw1 = new Swiper("#wySw1", {
+    // 任务三：课堂没讲过的 Swiper 能力——keyboard 键盘控制
+    keyboard: {
+      enabled: true,          // 启用键盘模块（左右方向键翻页）
+      onlyInViewport: true    // 只有演示一滚进可视区域时才接管方向键；
+                              // 没有这一项的话，页面再长、滚到哪儿方向键都在切演示一
+    }
+  });
 
   // ── 任务 2：初始化 #wySw2，循环 + 600ms + 圆点可点 + 箭头切换 ──
   // TODO: 在这里写你的代码
@@ -297,13 +493,36 @@ wySw4.destroy();
 
 
       // TODO 3：用新 effect 重建实例（把其它配置原样保留）
- var wySw4 = new Swiper('#wySw4', {
+      // 注意：这里不能写 var/let！写了就会在函数内部声明一个新的局部变量 wySw4，
+      // 把外面的全局 wySw4 遮住 —— 于是 TODO 2 里的 wySw4.destroy() 读到 undefined，
+      // 每次点击都在这里报错中断，新实例根本创建不出来，切换永远失效
+      var nzw_fx = btn.dataset.fx;               // 本次要切换到的效果名
+      var nzw_conf = {                           // 公共配置：每种效果都保留这一套
         loop: true,
         speed: 800,
-        effect: btn.dataset.fx,
+        effect: nzw_fx,
         pagination: { el: '#wyPag4', clickable: true },
         autoplay: { delay: 3200, disableOnInteraction: false }
-      });
+      };
+      // 任务二 · 第 7 种效果 creative（电影墙）：自定义变换只在 creative 时注入
+      if (nzw_fx === 'creative') {
+        nzw_conf.creativeEffect = {
+          perspective: true,            // 开启透视：z 值才会产生"近大远小"
+          limitProgress: 2,             // 相邻两张同时参与变换
+          shadowPerProgress: true,      // 阴影随进度加深，立体感更强
+          prev: {                       // 上一张：缩小左移并带角度
+            translate: ['-22%', 0, -140],  // x 左移 22%（相对容器宽），z 后退 140px → 远离镜头变小
+            rotate: [0, 0, -8],            // 绕 z 轴逆时针歪 8 度
+            opacity: 0.55                  // 变半透明，像被推远
+          },
+          next: {                       // 下一张：放大右移进场
+            translate: ['102%', 0, 80],    // x 从右侧画外进场，z 前进 80px → 贴近镜头显大
+            rotate: [0, 0, 6],             // 顺时针歪 6 度
+            opacity: 0.85
+          }
+        };
+      }
+      wySw4 = new Swiper('#wySw4', nzw_conf);
 
     });
   });
