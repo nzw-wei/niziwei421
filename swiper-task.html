@@ -249,17 +249,17 @@
       <span class="wy-no">三</span>
       <h2>任务三 · 综合创作 + 技术答辩：超纲加分项<small>第六件展品 · zoom 双击缩放 · AI 对话记录</small></h2>
     </div>
-    <p class="wy-txt">两件事：<b>①</b> 为光影展添加<b>第六件展品「爱达·魔都号」</b>（首艘国产大型邮轮，2024 年 1 月首航），图片由 AI 生成（横版 16:9），slide 结构完整，已加入页面全部四个演示；<b>②</b> 挑一个课堂没讲过的 Swiper 能力加上去——我选 <b>zoom 双击缩放</b>，装在演示一上。</p>
+    <p class="wy-txt">两件事：<b>①</b> 为光影展添加<b>第六件展品「爱达·魔都号」</b>（首艘国产大型邮轮，2024 年 1 月首航），图片由 AI 生成（横版 16:9），slide 结构完整，已加入页面全部四个演示；<b>②</b> 挑一个课堂没讲过的 Swiper 能力加上去——我选 <b>zoom 双击缩放</b>，做成页面底部独立的「双击缩放」演示模块（不动演示一）。</p>
 
     <div class="nzw-round">
       <h4>🛳️ 第 1 件事 · 第六件展品「爱达·魔都号」</h4>
-      <div class="nzw-need">图片用 AI 生成（横版 16:9，金色时刻航拍视角），文件 <code>swiper-imgs/adora_1.jpg</code>；slide 结构与其它展品完全一致（img + wy-cap 标题 + 说明文字），四个演示轮播同步新增，圆点分页器自动变 6 个。<b>（演示一的图片额外包进了 <code>swiper-zoom-container</code>，为任务三的 zoom 缩放做结构准备）</b></div>
+      <div class="nzw-need">图片用 AI 生成（横版 16:9，金色时刻航拍视角），文件 <code>swiper-imgs/adora_1.jpg</code>；slide 结构与其它展品完全一致（img + wy-cap 标题 + 说明文字），四个演示轮播同步新增，圆点分页器自动变 6 个。<b>（zoom 缩放单独做成了页面底部的「双击缩放」演示模块，四个演示台的 slide 保持课堂原样）</b></div>
     </div>
 
     <div class="nzw-round">
       <h4>🔍 第 2 件事 · 超纲能力 zoom 双击缩放（与 AI 的关键对话记录）</h4>
-      <div class="nzw-prompt"><b>我的第 1 轮提示词：</b>用 Swiper 11 给页面里的 #wySw1 轮播加上双击缩放图片的能力，最多放大到 3 倍，双击还原。</div>
-      <pre class="nzw-code"><code>var wySw1 = new Swiper("#wySw1", {
+      <div class="nzw-prompt"><b>我的第 1 轮提示词：</b>用 Swiper 11 给页面里的轮播加上双击缩放图片的能力，最多放大到 3 倍，双击还原。</div>
+      <pre class="nzw-code"><code>var nzwZoomSwiper = new Swiper("#nzwZoomSw", {
   zoom: true                <span class="nzw-bad">// AI 第 1 轮回答：配置没问题，但页面上双击毫无反应（见下）</span>
 })</code></pre>
       <div class="nzw-need" style="border-style:solid;border-color:#fca5a5;background:#fef2f2;color:#991b1b">
@@ -277,7 +277,7 @@ zoom: {
   maxRatio: 3,              <span class="nzw-note">// 双击最多放大到 3 倍（默认值，写出来便于答辩讲清）</span>
   minRatio: 1               <span class="nzw-note">// 还原倍数，再双击回到原始大小</span>
 }</code></pre>
-      <b style="font-size:13.5px;color:#166534">一句话结论：</b>zoom 模块 = 手势逻辑 + 作用结构两件事——<code>zoom: true</code> 只开了前者，把 img 包进 <code>swiper-zoom-container</code> 才补上后者；说明文字放容器外面就不跟着放大。
+      <b style="font-size:13.5px;color:#166534">一句话结论：</b>zoom 模块 = 手势逻辑 + 作用结构两件事——<code>zoom: true</code> 只开了前者，把 img 包进 <code>swiper-zoom-container</code> 才补上后者；说明文字放容器外面就不跟着放大。最终效果落地在页面底部独立的「双击缩放」演示模块，演示一保持任务 1 的最小形态。
     </div>
 
     <div class="nzw-round" style="border-color:#bbf7d0">
@@ -310,12 +310,12 @@ zoom: {
       <div class="wy-swiper">
         <div class="swiper" id="wySw1">
           <div class="swiper-wrapper">
-            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站"></div><div class="wy-cap"><h3>天宫空间站</h3><p>2022 年全面建成 · 中国人的太空家园</p></div></div>
-            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组"></div><div class="wy-cap"><h3>复兴号动车组</h3><p>350 km/h · 世界商业运营最高时速</p></div></div>
-            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"></div><div class="wy-cap"><h3>C919 大飞机</h3><p>2023 年商业首航 · 国产干线客机翱翔蓝天</p></div></div>
-            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"></div><div class="wy-cap"><h3>奋斗者号</h3><p>10909 米 · 触碰地球第四极马里亚纳海沟</p></div></div>
-            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"></div><div class="wy-cap"><h3>中国天眼 FAST</h3><p>500 米口径 · 世界最大单口径射电望远镜</p></div></div>
-            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/adora_1.jpg" alt="爱达·魔都号"></div><div class="wy-cap"><h3>爱达·魔都号</h3><p>首艘国产大型邮轮 · 2024 年 1 月首航</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站"><div class="wy-cap"><h3>天宫空间站</h3><p>2022 年全面建成 · 中国人的太空家园</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组"><div class="wy-cap"><h3>复兴号动车组</h3><p>350 km/h · 世界商业运营最高时速</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"><div class="wy-cap"><h3>C919 大飞机</h3><p>2023 年商业首航 · 国产干线客机翱翔蓝天</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"><div class="wy-cap"><h3>奋斗者号</h3><p>10909 米 · 触碰地球第四极马里亚纳海沟</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"><div class="wy-cap"><h3>中国天眼 FAST</h3><p>500 米口径 · 世界最大单口径射电望远镜</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/adora_1.jpg" alt="爱达·魔都号"><div class="wy-cap"><h3>爱达·魔都号</h3><p>首艘国产大型邮轮 · 2024 年 1 月首航</p></div></div>
           </div>
         </div>
       </div>
@@ -424,6 +424,33 @@ zoom: {
     </div>
   </div>
 
+  <!-- 任务三 · 超纲能力独立演示模块：双击缩放（zoom） -->
+  <div class="wy-sec">
+    <div class="wy-sec-head">
+      <span class="wy-no">🔍</span>
+      <h2>双击缩放 · zoom 超纲能力演示<small>任务三 · 双击放大 3 倍，再双击还原</small></h2>
+    </div>
+    <p class="wy-txt">这是任务三选择并新增的课堂没讲过的 Swiper 能力：<code>zoom</code>。<b>双击图片</b>以点击点为中心放大到 3 倍，<b>再双击</b>还原；放大后<b>按住拖动</b>可平移查看细节。图片必须包在官方要求的 <code>.swiper-zoom-container</code> 里缩放才生效（踩坑过程见上方任务三的 AI 对话记录）。四个演示台保持课堂原样，此效果单独落地在本模块。</p>
+    <div class="wy-demo">
+      <span class="wy-demo-tag">🎛️ 双击缩放演示台 · 双击图片放大 / 再双击还原</span>
+      <div class="wy-swiper">
+        <div class="swiper" id="nzwZoomSw">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站"></div><div class="wy-cap"><h3>天宫空间站</h3><p>双击我 · 放大 3 倍看细节</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组"></div><div class="wy-cap"><h3>复兴号动车组</h3><p>再双击 · 一秒还原</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"></div><div class="wy-cap"><h3>C919 大飞机</h3><p>放大后按住拖动可平移</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"></div><div class="wy-cap"><h3>奋斗者号</h3><p>zoom 靠 swiper-zoom-container 生效</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"></div><div class="wy-cap"><h3>中国天眼 FAST</h3><p>放大看看正中的馈源舱</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/adora_1.jpg" alt="爱达·魔都号"></div><div class="wy-cap"><h3>爱达·魔都号</h3><p>甲板层层数得清（任务三）</p></div></div>
+          </div>
+          <div class="swiper-pagination" id="nzwZoomPag"></div>
+          <div class="swiper-button-prev" id="nzwZoomPrev"></div>
+          <div class="swiper-button-next" id="nzwZoomNext"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="wy-back"><a href="index.html">← 返回课堂实践中心</a></div>
 
   <footer>Swiper 课堂操作任务 · 大国重器光影展（学生版） · 高级网页设计 · 2026-2027-1</footer>
@@ -436,11 +463,22 @@ zoom: {
 
   // ── 任务 1：初始化 #wySw1，让它至少可以拖动 ──
   // TODO: 在这里写你的代码
- var wySw1 = new Swiper("#wySw1", {
-    // 任务三：课堂没讲过的 Swiper 能力——zoom 双击缩放
+ var wySw1 = new Swiper("#wySw1", {});
+
+  // ── 任务三：页面底部独立的「双击缩放」演示模块（zoom 双击放大 3 倍，不动演示一）──
+var nzwZoomSwiper = new Swiper("#nzwZoomSw", {
+    speed: 600,
+    pagination: {
+      el: "#nzwZoomPag",
+      clickable: true
+    },
+    navigation: {
+      nextEl: "#nzwZoomNext",
+      prevEl: "#nzwZoomPrev"
+    },
     zoom: {
       maxRatio: 3,      // 双击最多放大到 3 倍（默认就是 3，写出来便于答辩讲清）
-      minRatio: 1       // 还原倍数，再双击回到原始大小
+      minRatio: 1       // 再双击还原到原始大小
     }
     // 注意：zoom 只开手势逻辑还不够，img 必须包进 .swiper-zoom-container（见任务三卡）
   });
